@@ -1,6 +1,6 @@
 "use strict";
 
-const baseURL = 'https://api.jikan.moe/v4';
+const baseURL = 'https://api.jikan.moe/v4/';
 const defaultParams = { sfw: true };
 
 const createURL = (resource, params) => {
@@ -16,18 +16,14 @@ const createURL = (resource, params) => {
     return url;
 }
 
-const getAll = () => {
-    const options = {
-        method: "GET"
-    };
+const getAnime = async (query) => {
+    const url = createURL("anime", query);
 
-    const url = createURL("anime", {});
-
-    console.log(url);
+    return fetch(url).then(res => res.json());//TODO filter to relevant data
 };
 
 const jikanService = {
-    getAll
+    getAnime
 };
 
 export default jikanService;

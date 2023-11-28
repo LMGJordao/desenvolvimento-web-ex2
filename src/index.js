@@ -50,7 +50,12 @@ const form = document.getElementById("form_search");
 form.addEventListener("submit", e => {
     e.preventDefault();
 
-    console.log(parseForm());
+    jikanService
+        .getAnime(parseForm())
+        .then(res => {
+            //TODO update DOM
+            console.log(res);
+        });
 });
 
 document.getElementById("button_clear").addEventListener("click", clearSelected);
