@@ -40,9 +40,17 @@ const parseForm = () => {
     return output;
 };
 
+const clearSelected = () => {
+    document
+        .querySelectorAll('[id^="genre_"]')
+        .forEach(element => element.checked=false);
+};
+
 const form = document.getElementById("form_search");
 form.addEventListener("submit", e => {
     e.preventDefault();
 
     console.log(parseForm());
 });
+
+document.getElementById("button_clear").addEventListener("click", clearSelected);
