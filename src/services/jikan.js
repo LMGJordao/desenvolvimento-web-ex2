@@ -19,7 +19,15 @@ const createURL = (resource, params) => {
 const getAnime = async (query) => {
     const url = createURL("anime", query);
 
-    return fetch(url).then(res => res.json());//TODO filter to relevant data
+    return fetch(url)
+        .then(res => res.json())
+        .then(res => {
+            return res.data
+                .map((anime) => {
+                    let {images, title, type, year, genres} = anime;
+                    return {images, title, type, year, genres};
+                });
+        });
 };
 
 const jikanService = {
