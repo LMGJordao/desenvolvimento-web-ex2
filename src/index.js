@@ -3,6 +3,7 @@
 import jikanService from "./services/jikan.js";
 
 const gallery = document.getElementById("gallery");
+const form = document.getElementById("form_search");
 
 const parseForm = () => {
     let output = {};
@@ -45,10 +46,10 @@ const parseForm = () => {
 const clearSelected = () => {
     document
         .querySelectorAll('[id^="genre_"]')
-        .forEach(element => element.checked=false);
+        .forEach(element => element.checked = false);
 };
 
-const createCard = ({images, title, type, year, genres}) => {
+const createCard = ({ images, title, type, year, genres }) => {
     const card = document.createElement("div");
     card.classList.add("card");
 
@@ -62,8 +63,8 @@ const createCard = ({images, title, type, year, genres}) => {
     else
         img.src = "./src/resources/images/fallback_poster.png";
 
-    /* const titleHeading = document.createElement("h2");
-    titleHeading.textContent = title; */
+    const titleHeading = document.createElement("h2");
+    titleHeading.textContent = title.title;
 
     const undertitle = document.createElement("p");
     undertitle.textContent = `Year: ${year !== null ? year : "-"}\nType: ${type}`;
@@ -81,23 +82,20 @@ const createCard = ({images, title, type, year, genres}) => {
     genrelistContainer.appendChild(genrelist);
 
     card.appendChild(img);
-    //card.appendChild(titleHeading);
+    card.appendChild(titleHeading);
     card.appendChild(undertitle);
     card.appendChild(genrelistContainer);
     gallery.appendChild(card);
 };
 
-const form = document.getElementById("form_search");
 form.addEventListener("submit", e => {
     e.preventDefault();
 
     jikanService
         .getAnime(parseForm())
         .then(res => {
-            res.forEach(anime => createCard(anime))
+            res.forEach(anime => createCard(anime));
         });
-
-    
 });
 
 document.getElementById("button_clear")
