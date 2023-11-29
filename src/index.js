@@ -95,6 +95,12 @@ const renderData = () => {
     data.forEach(anime => createCard(anime));
 };
 
+document.addEventListener("DOMContentLoaded", async e => {
+    const result = await jikanService.getAnime();
+    data = [...result];
+
+    renderData();
+});
 
 form.addEventListener("submit", async e => {
     e.preventDefault();
