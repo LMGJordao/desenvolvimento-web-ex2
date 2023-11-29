@@ -2,6 +2,8 @@
 
 import jikanService from "./services/jikan.js";
 
+const gallery = document.getElementById("gallery");
+
 const parseForm = () => {
     let output = {};
     const form = document.getElementById("form_search");
@@ -46,6 +48,45 @@ const clearSelected = () => {
         .forEach(element => element.checked=false);
 };
 
+const createCard = ({images, title, type, year, genres}) => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+
+    const img = document.createElement("img");
+    img.onerror = (e) => {
+        img.onerror = null;
+        img.src = "./src/resources/images/fallback_poster.png";
+    };
+    if (images["jpg"] !== undefined && images["jpg"]["image_url"] !== undefined && images["jpg"]["image_url"] !== null)
+        img.src = images.jpg.image_url;
+    else
+        img.src = "./src/resources/images/fallback_poster.png";
+
+    /* const titleHeading = document.createElement("h2");
+    titleHeading.textContent = title; */
+
+    const undertitle = document.createElement("p");
+    undertitle.textContent = `Year: ${year !== null ? year : "-"}\nType: ${type}`;
+
+    const genrelistContainer = document.createElement("div");
+    const genrelistLabel = document.createElement("p");
+    genrelistLabel.textContent = "Genre";
+    const genrelist = document.createElement("ul");
+    genres.forEach(genre => {
+        const genreElement = document.createElement("li");
+        genreElement.textContent = genre["name"];
+        genrelist.appendChild(genreElement);
+    });
+    genrelistContainer.appendChild(genrelistLabel);
+    genrelistContainer.appendChild(genrelist);
+
+    card.appendChild(img);
+    //card.appendChild(titleHeading);
+    card.appendChild(undertitle);
+    card.appendChild(genrelistContainer);
+    gallery.appendChild(card);
+};
+
 const form = document.getElementById("form_search");
 form.addEventListener("submit", e => {
     e.preventDefault();
@@ -53,9 +94,11 @@ form.addEventListener("submit", e => {
     jikanService
         .getAnime(parseForm())
         .then(res => {
-            //TODO update DOM
-            console.log(res);
+            res.forEach(anime => createCard(anime))
         });
+
+    
 });
 
-document.getElementById("button_clear").addEventListener("click", clearSelected);
+document.getElementById("button_clear")
+    .addEventListener("click", clearSelected);
