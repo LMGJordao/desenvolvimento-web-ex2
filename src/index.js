@@ -4,6 +4,8 @@ import jikanService from "./services/jikan.js";
 
 const gallery = document.getElementById("gallery");
 const form = document.getElementById("form_search");
+const button_clear = document.getElementById("button_clear");
+let data = [];
 
 const parseForm = () => {
     let output = {};
@@ -88,15 +90,19 @@ const createCard = ({ images, title, type, year, genres }) => {
     gallery.appendChild(card);
 };
 
-form.addEventListener("submit", e => {
+const renderData = () => {
+    gallery.innerHTML = "";
+    data.forEach(anime => createCard(anime));
+};
+
+
+form.addEventListener("submit", async e => {
     e.preventDefault();
 
-    jikanService
-        .getAnime(parseForm())
-        .then(res => {
-            res.forEach(anime => createCard(anime));
-        });
+    const result = await jikanService.getAnime(parseForm());
+    data = [...result];
+
+    renderData();
 });
 
-document.getElementById("button_clear")
-    .addEventListener("click", clearSelected);
+button_clear.addEventListener("click", clearSelected);
