@@ -24,6 +24,7 @@ const getAnime = async (query) => {
         .then(res => {
             return res.data
                 .map((anime) => {
+                    //TODO replace title with titles -> title is deprecated
                     let {images, title, type, year, genres} = anime;
                     return {images, title, type, year, genres};
                 });
