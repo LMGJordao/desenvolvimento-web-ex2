@@ -93,6 +93,11 @@ const createCard = ({ images, title, type, year, genres }) => {
     gallery.appendChild(card);
 };
 
+const excludeFilter = (anime) => {
+    return !anime.genres
+        .some(genre => excluded.some(ex => genre.name === ex));
+};
+
 const categorySort = (a, b) => {
     const direction = sortDirection === "Ascending" ? 1 : -1;
     switch (sortType) {
@@ -110,6 +115,7 @@ const renderData = () => {
     gallery.innerHTML = "";
     data
         .sort((a, b) => categorySort(a, b))
+        .filter(anime => excludeFilter(anime))
         .forEach(anime => createCard(anime));
 };
 
