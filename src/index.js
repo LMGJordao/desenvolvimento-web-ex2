@@ -6,6 +6,9 @@ const gallery = document.getElementById("gallery");
 const form = document.getElementById("form_search");
 const button_clear = document.getElementById("button_clear");
 let data = [];
+let excluded = [];
+let sortType = "title";
+let sortDirection = "Ascending";
 
 const parseForm = () => {
     let output = {};
@@ -90,16 +93,30 @@ const createCard = ({ images, title, type, year, genres }) => {
     gallery.appendChild(card);
 };
 
+const categorySort = (a, b) => {
+    const direction = sortDirection === "Ascending" ? 1 : -1;
+    switch (sortType) {
+        case "title":
+        default:
+            return a.title.title.localeCompare(b.title.title) * direction;
+        case "year":
+            return (a.year - b.year) * direction;
+        case "type":
+            return a.type.localeCompare(b.type) * direction;
+    }
+};
+
 const renderData = () => {
     gallery.innerHTML = "";
-    data.forEach(anime => createCard(anime));
+    data
+        .sort((a, b) => categorySort(a, b))
+        .forEach(anime => createCard(anime));
 };
 
 document.addEventListener("DOMContentLoaded", async e => {
     const result = await jikanService.getAnime();
     data = [...result];
 
-    renderData();
 });
 
 form.addEventListener("submit", async e => {
