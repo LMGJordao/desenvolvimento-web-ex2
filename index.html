@@ -12,7 +12,7 @@
 <body>
     <main>
         <section id="search">
-            <form action="" method="get" id="form_search">
+            <form action="" method="get" id="form_search_query">
                 <label for="title">Title: </label>
                 <input type="search" name="title" id="title">
                 <fieldset>
@@ -85,7 +85,7 @@
                         <input type="checkbox" name="genre" value="27" id="genre_shounen">
                         <label for="genre_shounen">Shounen</label>
                     </div>
-                    <button type="button" id="button_clear">Clear Selection</button>
+                    <button type="button" id="button_clear_search_genre_selection">Clear Selection</button>
                 </fieldset>
                 <div>
                     <label for="types">Types: </label>
@@ -103,17 +103,17 @@
             </form>
         </section>
         <section id="gallery_controller">
-            <div id="sort_container">
-                <label for="sort_name">Order by: </label>
-                <select name="sortName" id="sort_name">
+            <div>
+                <label for="dropdown_sort_type">Order by: </label>
+                <select name="sortType" id="dropdown_sort_type">
                     <option value="title">Title</option>
                     <option value="year">Year</option>
                     <option value="type">Show type</option>
                 </select>
-                <button id="sort_direction">Ascending</button>
+                <button id="button_sort_direction">Ascending</button>
             </div>
-            <div id="filter_container">
-                Exclude:
+            <div>
+                <p>Exclude:</p>
                 <div>
                     <input type="checkbox" name="filter" value="1" id="genre_action">
                     <label for="genre_action">Action</label>
@@ -186,7 +186,7 @@
                 <button type="button" id="button_all_filter">Select All</button>
             </div>
         </section>
-        <section id="gallery"></section>
+        <section id="container_gallery"></section>
     </main>
 </body>
 

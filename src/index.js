@@ -1,26 +1,23 @@
 "use strict"
 
+import App from "./App.js";
 import jikanService from "./services/jikan.js";
 
-const gallery = document.getElementById("gallery");
-const form = document.getElementById("form_search");
-const button_clear = document.getElementById("button_clear");
-const dropdown_sort_type = document.getElementById("sort_name");
-const button_sort_direction = document.getElementById("sort_direction");
+const container_gallery = document.getElementById("container_gallery");
+const form_search_query = document.getElementById("form_search_query");
+const button_clear_search_genre_selection = document.getElementById("button_clear_search_genre_selection");
+const dropdown_sort_type = document.getElementById("dropdown_sort_type");
+const button_sort_direction = document.getElementById("button_sort_direction");
 const button_clear_filter = document.getElementById("button_clear_filter");
 const button_all_filter = document.getElementById("button_all_filter");
 const filter = document.querySelectorAll('[name="filter"][id^="genre_"]');
 
-let data = [];
-let excluded = [];
-let sortType = "";
-let sortDirection = "Ascending";
+const appState = new App();
 
-const parseForm = () => {
+const parseFormSearchQuery = () => {
     let output = {};
-    const form = document.getElementById("form_search");
 
-    const title = form.elements.title;
+    const title = form_search_query.elements.title;
     if (title.value.length !== 0 && title.value !== null) {
         output = {
             ...output,
@@ -28,11 +25,11 @@ const parseForm = () => {
         };
     };
 
-    const genres = form.elements.genre;
+    const genres = form_search_query.elements.genre;
     let selectedGenres = "";
-    genres.forEach(element => {
-        if (element.checked) {
-            selectedGenres = selectedGenres.concat(`${element.value} `);
+    genres.forEach(genre => {
+        if (genre.checked) {
+            selectedGenres = selectedGenres.concat(`${genre.value} `);
         }
     });
     selectedGenres = selectedGenres.trim().replaceAll(" ", ",");
@@ -43,7 +40,7 @@ const parseForm = () => {
         };
     };
 
-    const type = form.elements.types;
+    const type = form_search_query.elements.types;
     if (type.value.length !== 0 && type.value !== null) {
         output = {
             ...output,
@@ -54,41 +51,25 @@ const parseForm = () => {
     return output;
 };
 
-const clearSelectedInQuery = () => {
-    document
-        .querySelectorAll('[name="genre"][id^="genre_"]')
-        .forEach(element => element.checked = false);
-};
-
-const clearSelectedInFilter = () => {
-    filter.forEach(element => element.checked = false);
-    renderData();
-};
-
-const selectAllInFilter = () => {
-    filter.forEach(element => element.checked = true);
-    renderData();
-};
-
 const createCard = ({ images, title, type, year, genres }) => {
     const card = document.createElement("div");
-    card.classList.add("card");
 
-    const img = document.createElement("img");
-    img.onerror = (e) => {
-        img.onerror = null;
-        img.src = "./src/resources/images/fallback_poster.png";
+    const cardPoster = document.createElement("img");
+    cardPoster.onerror = (e) => {
+        cardPoster.onerror = null;
+        cardPoster.src = "./src/resources/images/fallback_poster.png";
     };
     if (images["jpg"] !== undefined && images["jpg"]["image_url"] !== undefined && images["jpg"]["image_url"] !== null)
-        img.src = images.jpg.image_url;
+        cardPoster.src = images.jpg.image_url;
     else
-        img.src = "./src/resources/images/fallback_poster.png";
+        cardPoster.src = "./src/resources/images/fallback_poster.png";
+    cardPoster.alt = `Poster for ${title.title}`;
 
-    const titleHeading = document.createElement("h2");
-    titleHeading.textContent = title.title;
+    const cardTitle = document.createElement("h2");
+    cardTitle.textContent = title.title;
 
-    const undertitle = document.createElement("p");
-    undertitle.textContent = `Year: ${year !== null ? year : "-"}\nType: ${type}`;
+    const cardSubtitle = document.createElement("p");
+    cardSubtitle.textContent = `Year: ${year !== null ? year : "-"}\nType: ${type}`;
 
     const genrelistContainer = document.createElement("div");
     const genrelistLabel = document.createElement("p");
@@ -102,81 +83,86 @@ const createCard = ({ images, title, type, year, genres }) => {
     genrelistContainer.appendChild(genrelistLabel);
     genrelistContainer.appendChild(genrelist);
 
-    card.appendChild(img);
-    card.appendChild(titleHeading);
-    card.appendChild(undertitle);
+    card.appendChild(cardPoster);
+    card.appendChild(cardTitle);
+    card.appendChild(cardSubtitle);
     card.appendChild(genrelistContainer);
-    gallery.appendChild(card);
-};
-
-const excludeFilter = (anime) => {
-    return !anime.genres
-        .some(genre => excluded.some(ex => genre.mal_id === ex));
-};
-
-const categorySort = (a, b) => {
-    const direction = sortDirection === "Ascending" ? 1 : -1;
-    switch (sortType) {
-        case "title":
-        default:
-            return a.title.title.localeCompare(b.title.title) * direction;
-        case "year":
-            return (a.year - b.year) * direction;
-        case "type":
-            return a.type.localeCompare(b.type) * direction;
-    }
+    container_gallery.appendChild(card);
 };
 
 const renderData = () => {
-    gallery.innerHTML = "";
-    data
-        .sort((a, b) => categorySort(a, b))
-        .filter(anime => excludeFilter(anime))
+    container_gallery.innerHTML = "";
+    appState
+        .renderData
         .forEach(anime => createCard(anime));
 };
 
-document.addEventListener("DOMContentLoaded", async e => {
-    data = [];
-    excluded = [];
-    sortType = dropdown_sort_type.value;
-    sortDirection = button_sort_direction.innerText;
+const clearSelectedInQuery = () => {
+    document
+        .querySelectorAll('[name="genre"][id^="genre_"]')
+        .forEach(element => element.checked = false);
+};
+button_clear_search_genre_selection.addEventListener("click", clearSelectedInQuery);
 
-    /* const result = await jikanService.getAnime();
-    data = [...result];
-
-    renderData(); */
-});
-
-form.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const result = await jikanService.getAnime(parseForm());
-    data = [...result];
-    
-    
-    console.log(data);
+const chageSortType = () => {
+    appState.setSortType(dropdown_sort_type.value);
     renderData();
-});
+};
+dropdown_sort_type.addEventListener("change", chageSortType);
 
-button_clear.addEventListener("click", clearSelectedInQuery);
-
-dropdown_sort_type.addEventListener("change", e => {
-    sortType = e.target.value;
+const toggleSortDirection = () => {
+    button_sort_direction.textContent = button_sort_direction.textContent === "Ascending" ? "Descending" : "Ascending";
+    appState.setSortDirection(button_sort_direction.textContent);
     renderData();
-});
+};
+button_sort_direction.addEventListener("click", toggleSortDirection);
 
-button_sort_direction.addEventListener("click", e => {
-    e.target.textContent = e.target.textContent === "Ascending" ? "Descending" : "Ascending";
-    sortDirection = e.target.textContent;
+const clearSelectedInGenreFilter = () => {
+    filter.forEach(element => element.checked = false);
+
+    appState.clearExcludedGenreFilter();
+
     renderData();
-});
+};
+button_clear_filter.addEventListener("click", clearSelectedInGenreFilter);
 
-button_clear_filter.addEventListener("click", clearSelectedInFilter);
+const selectAllInGenreFilter = () => {
+    filter.forEach(element => element.checked = true);
 
-button_all_filter.addEventListener("click", selectAllInFilter);
+    appState.fillExcludedGenreFilter();
+
+    renderData();
+};
+button_all_filter.addEventListener("click", selectAllInGenreFilter);
 
 filter.forEach(element => {
-    element.addEventListener("change", ev => {
-        console.log(ev.target.value);
+    element.addEventListener("change", e => {
+        const val = Number.parseInt(e.target.value);
+        if (e.target.checked) {
+            appState.addToExcludedGenreFilter(val);
+        } else {
+            appState.removeFromExcludedGenreFilter(val);
+        }
+        renderData();
     });
+});
+
+document.addEventListener("DOMContentLoaded", async e => {
+    clearSelectedInGenreFilter();
+    appState.setSortType(dropdown_sort_type.value);
+    appState.setSortDirection(button_sort_direction.textContent);
+
+    const result = await jikanService.getAnime();
+    appState.replaceData(result);
+
+    renderData();
+});
+
+form_search_query.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const result = await jikanService.getAnime(parseFormSearchQuery());
+    appState.replaceData(result);
+    
+    renderData();
 });

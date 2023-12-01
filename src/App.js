@@ -30,6 +30,18 @@ export default class App {
             this.excludedGenreFilter.splice(idx, 1);
     }
 
+    replaceData(newData) {
+        this.data = [...newData];
+    }
+
+    setSortDirection(direction) {
+        this.sortDirection = direction;
+    }
+
+    setSortType(type) {
+        this.sortType = type;
+    }
+
     /**
      * Compares `a` and `b` to check if they're in order based on the selected property and direction.
      * 
@@ -68,17 +80,5 @@ export default class App {
         return this.data
             .sort((a, b) => this.#sortBySelectedProperty(a, b))
             .filter(anime => this.#filterOutExcludedGenres(anime));
-    }
-
-    set sortDirection(direction) {
-        this.sortDirection = direction;
-    }
-
-    set sortType(type) {
-        this.sortType = type;
-    }
-
-    set data(newData) {
-        this.data = [...newData];
     }
 }
