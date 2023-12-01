@@ -19,14 +19,14 @@ const createURL = (resource, params) => {
 const getAnime = async (query) => {
     const url = createURL("anime", query);
 
-    return fetch(url)
+    return fetch(url, { headers: new Headers({ "Cache-Control": "max-age=86400 no-cache" }) })
         .then(res => res.json())
         .then(res => {
             return res.data
                 .map((anime) => {
-                    const {images, titles, type, year, genres} = anime;
+                    const { images, titles, type, year, genres } = anime;
                     const title = titles.find((t) => t.type === "Default");
-                    return {images, title, type, year, genres};
+                    return { images, title, type, year, genres };
                 });
         });
 };
