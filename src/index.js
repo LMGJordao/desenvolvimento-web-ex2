@@ -5,9 +5,15 @@ import jikanService from "./services/jikan.js";
 const gallery = document.getElementById("gallery");
 const form = document.getElementById("form_search");
 const button_clear = document.getElementById("button_clear");
+const dropdown_sort_type = document.getElementById("sort_name");
+const button_sort_direction = document.getElementById("sort_direction");
+const button_clear_filter = document.getElementById("button_clear_filter");
+const button_all_filter = document.getElementById("button_all_filter");
+const filter = document.querySelectorAll('[name="filter"][id^="genre_"]');
+
 let data = [];
 let excluded = [];
-let sortType = "title";
+let sortType = "";
 let sortDirection = "Ascending";
 
 const parseForm = () => {
@@ -48,10 +54,20 @@ const parseForm = () => {
     return output;
 };
 
-const clearSelected = () => {
+const clearSelectedInQuery = () => {
     document
-        .querySelectorAll('[id^="genre_"]')
+        .querySelectorAll('[name="genre"][id^="genre_"]')
         .forEach(element => element.checked = false);
+};
+
+const clearSelectedInFilter = () => {
+    filter.forEach(element => element.checked = false);
+    renderData();
+};
+
+const selectAllInFilter = () => {
+    filter.forEach(element => element.checked = true);
+    renderData();
 };
 
 const createCard = ({ images, title, type, year, genres }) => {
@@ -95,7 +111,7 @@ const createCard = ({ images, title, type, year, genres }) => {
 
 const excludeFilter = (anime) => {
     return !anime.genres
-        .some(genre => excluded.some(ex => genre.name === ex));
+        .some(genre => excluded.some(ex => genre.mal_id === ex));
 };
 
 const categorySort = (a, b) => {
@@ -120,9 +136,15 @@ const renderData = () => {
 };
 
 document.addEventListener("DOMContentLoaded", async e => {
-    const result = await jikanService.getAnime();
+    data = [];
+    excluded = [];
+    sortType = dropdown_sort_type.value;
+    sortDirection = button_sort_direction.innerText;
+
+    /* const result = await jikanService.getAnime();
     data = [...result];
 
+    renderData(); */
 });
 
 form.addEventListener("submit", async e => {
@@ -130,8 +152,31 @@ form.addEventListener("submit", async e => {
 
     const result = await jikanService.getAnime(parseForm());
     data = [...result];
-
+    
+    
+    console.log(data);
     renderData();
 });
 
-button_clear.addEventListener("click", clearSelected);
+button_clear.addEventListener("click", clearSelectedInQuery);
+
+dropdown_sort_type.addEventListener("change", e => {
+    sortType = e.target.value;
+    renderData();
+});
+
+button_sort_direction.addEventListener("click", e => {
+    e.target.textContent = e.target.textContent === "Ascending" ? "Descending" : "Ascending";
+    sortDirection = e.target.textContent;
+    renderData();
+});
+
+button_clear_filter.addEventListener("click", clearSelectedInFilter);
+
+button_all_filter.addEventListener("click", selectAllInFilter);
+
+filter.forEach(element => {
+    element.addEventListener("change", ev => {
+        console.log(ev.target.value);
+    });
+});
