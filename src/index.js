@@ -53,8 +53,10 @@ const parseFormSearchQuery = () => {
 
 const createCard = ({ images, title, type, year, genres }) => {
     const card = document.createElement("div");
+    card.classList.add("card");
 
     const cardPoster = document.createElement("img");
+    cardPoster.classList.add("card__poster");
     cardPoster.onerror = (e) => {
         cardPoster.onerror = null;
         cardPoster.src = "./src/resources/images/fallback_poster.png";
@@ -65,28 +67,39 @@ const createCard = ({ images, title, type, year, genres }) => {
         cardPoster.src = "./src/resources/images/fallback_poster.png";
     cardPoster.alt = `Poster for ${title.title}`;
 
+    const cardTextContent = document.createElement("div");
+    cardTextContent.classList.add("card__text_content");
+
     const cardTitle = document.createElement("h2");
+    cardTitle.classList.add("card__title");
     cardTitle.textContent = title.title;
 
-    const cardSubtitle = document.createElement("p");
-    cardSubtitle.textContent = `Year: ${year !== null ? year : "-"}\nType: ${type}`;
+    const cardSubtitle = document.createElement("div");
+    cardSubtitle.classList.add("card__subtitle");
 
+    const cardYear = document.createElement("p");
+    cardYear.innerHTML = `<b>Year:</b> ${year !== null ? year : "-"}`;
+
+    const cardAnimeType = document.createElement("p");
+    cardAnimeType.innerHTML = `<b>Type:</b> ${type}`;
+    
     const genrelistContainer = document.createElement("div");
-    const genrelistLabel = document.createElement("p");
-    genrelistLabel.textContent = "Genre";
-    const genrelist = document.createElement("ul");
-    genres.forEach(genre => {
-        const genreElement = document.createElement("li");
-        genreElement.textContent = genre["name"];
-        genrelist.appendChild(genreElement);
-    });
-    genrelistContainer.appendChild(genrelistLabel);
-    genrelistContainer.appendChild(genrelist);
+    genrelistContainer.classList.add("card__genre_list");
 
+    genres.forEach(genre => {
+        const genreElement = document.createElement("div");
+        genreElement.classList.add("genre_tag");
+        genreElement.textContent = genre["name"];
+        genrelistContainer.appendChild(genreElement);
+    });
+    
+    cardSubtitle.appendChild(cardYear);
+    cardSubtitle.appendChild(cardAnimeType);
+    cardTextContent.appendChild(cardTitle);
+    cardTextContent.appendChild(cardSubtitle);
+    cardTextContent.appendChild(genrelistContainer);
     card.appendChild(cardPoster);
-    card.appendChild(cardTitle);
-    card.appendChild(cardSubtitle);
-    card.appendChild(genrelistContainer);
+    card.appendChild(cardTextContent);
     container_gallery.appendChild(card);
 };
 
