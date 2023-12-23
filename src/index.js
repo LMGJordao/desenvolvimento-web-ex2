@@ -166,6 +166,7 @@ document.addEventListener("DOMContentLoaded", async e => {
     appState.setSortDirection(button_sort_direction.textContent);
 
     const result = await jikanService.getAnime();
+    console.log(result);
     appState.replaceData(result);
 
     renderData();
@@ -178,4 +179,21 @@ form_search_query.addEventListener("submit", async e => {
     appState.replaceData(result);
     
     renderData();
+});
+
+document.getElementById("title").addEventListener("focusin", e => {
+    document.getElementById("search_genres").style.display = "flex";
+    document.getElementById("bar").classList.toggle("search__bar_focus");
+    if(document.getElementsByClassName("shadow").length === 0) {
+        let shadow = document.createElement("span");
+        shadow.classList.add("shadow");
+        shadow.addEventListener("click", e => {
+            document.getElementById("search_genres").style.display = "none";
+            shadow.remove();
+        });
+        document.body.appendChild(shadow);
+    }
+});
+document.getElementById("title").addEventListener("focusout", e => {
+    document.getElementById("bar").classList.toggle("search__bar_focus")
 });

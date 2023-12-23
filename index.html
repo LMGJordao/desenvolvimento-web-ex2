@@ -14,82 +14,8 @@
     <main>
         <section id="search">
             <form action="" method="get" id="form_search_query">
-                <label for="title">Title: </label>
-                <input type="search" name="title" id="title">
-                <fieldset>
-                    <legend>Genres</legend>
-                    <div>
-                        <input type="checkbox" name="genre" value="1" id="genre_action">
-                        <label for="genre_action">Action</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="2" id="genre_adventure">
-                        <label for="genre_adventure">Adventure</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="4" id="genre_comedy">
-                        <label for="genre_comedy">Comedy</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="8" id="genre_drama">
-                        <label for="genre_drama">Drama</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="10" id="genre_fantasy">
-                        <label for="genre_fantasy">Fantasy</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="7" id="genre_mystery">
-                        <label for="genre_mystery">Mystery</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="22" id="genre_romance">
-                        <label for="genre_romance">Romance</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="24" id="genre_sci_fi">
-                        <label for="genre_sci_fi">Sci-Fi</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="36" id="genre_slice_of_life">
-                        <label for="genre_slice_of_life">Slice of Life</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="37" id="genre_supernatural">
-                        <label for="genre_supernatural">Supernatural</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="13" id="genre_historical">
-                        <label for="genre_historical">Historical</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="18" id="genre_mecha">
-                        <label for="genre_mecha">Mecha</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="19" id="genre_music">
-                        <label for="genre_music">Music</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="23" id="genre_school">
-                        <label for="genre_school">School</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="42" id="genre_seinen">
-                        <label for="genre_seinen">Seinen</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="25" id="genre_shoujo">
-                        <label for="genre_shoujo">Shoujo</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="genre" value="27" id="genre_shounen">
-                        <label for="genre_shounen">Shounen</label>
-                    </div>
-                    <button type="button" id="button_clear_search_genre_selection">Clear Selection</button>
-                </fieldset>
-                <div>
-                    <label for="types">Types: </label>
+                <div id="bar">
+                    <!-- <label for="types">Types: </label> -->
                     <select name="types" id="types">
                         <option value="">Any</option>
                         <option value="tv">TV</option>
@@ -99,8 +25,109 @@
                         <option value="ona">ONA</option>
                         <option value="music">Music</option>
                     </select>
+                    <!-- <label for="title">Title: </label> -->
+                    <input type="search" name="title" id="title" placeholder="Search…">
+                    <label>
+                        <input type="submit" value="Search">
+                        <svg id="search_icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g filter="url(#filter0_d_200_795)">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M18 15C18 9.06186 23.2304 4 30 4C36.7696 4 42 9.06186 42 15C42 20.9381 36.7696 26 30 26C23.2304 26 18 20.9381 18 15ZM30 0C21.3056 0 14 6.57873 14 15C14 19.1541 15.7777 22.8598 18.6228 25.5487L4.58577 39.5858C3.80472 40.3668 3.80472 41.6332 4.58577 42.4142C5.36682 43.1953 6.63315 43.1953 7.4142 42.4142L21.896 27.9324C24.2872 29.25 27.0644 30 30 30C38.6944 30 46 23.4213 46 15C46 6.57873 38.6944 0 30 0Z"
+                                    fill="black" />
+                            </g>
+                            <defs>
+                                <filter id="filter0_d_200_795" x="0" y="0" width="50" height="51"
+                                    filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                    <feColorMatrix in="SourceAlpha" type="matrix"
+                                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                    <feOffset dy="4" />
+                                    <feGaussianBlur stdDeviation="2" />
+                                    <feComposite in2="hardAlpha" operator="out" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                                    <feBlend mode="normal" in2="BackgroundImageFix"
+                                        result="effect1_dropShadow_200_795" />
+                                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_200_795"
+                                        result="shape" />
+                                </filter>
+                            </defs>
+                        </svg>
+                    </label>
                 </div>
-                <input type="submit" value="Search">
+                <div id="search_genres">
+                    <fieldset>
+                        <div>
+                            <input type="checkbox" name="genre" value="1" id="genre_action">
+                            <label for="genre_action">Action</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="2" id="genre_adventure">
+                            <label for="genre_adventure">Adventure</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="4" id="genre_comedy">
+                            <label for="genre_comedy">Comedy</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="8" id="genre_drama">
+                            <label for="genre_drama">Drama</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="10" id="genre_fantasy">
+                            <label for="genre_fantasy">Fantasy</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="7" id="genre_mystery">
+                            <label for="genre_mystery">Mystery</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="22" id="genre_romance">
+                            <label for="genre_romance">Romance</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="24" id="genre_sci_fi">
+                            <label for="genre_sci_fi">Sci-Fi</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="36" id="genre_slice_of_life">
+                            <label for="genre_slice_of_life">Slice of Life</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="37" id="genre_supernatural">
+                            <label for="genre_supernatural">Supernatural</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="13" id="genre_historical">
+                            <label for="genre_historical">Historical</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="18" id="genre_mecha">
+                            <label for="genre_mecha">Mecha</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="19" id="genre_music">
+                            <label for="genre_music">Music</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="23" id="genre_school">
+                            <label for="genre_school">School</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="42" id="genre_seinen">
+                            <label for="genre_seinen">Seinen</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="25" id="genre_shoujo">
+                            <label for="genre_shoujo">Shoujo</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="genre" value="27" id="genre_shounen">
+                            <label for="genre_shounen">Shounen</label>
+                        </div>
+                        <button type="button" id="button_clear_search_genre_selection">Clear Selection</button>
+                    </fieldset>
+                </div>
+
             </form>
         </section>
         <section id="gallery_controller">
@@ -113,7 +140,7 @@
                 </select>
                 <button id="button_sort_direction">Ascending</button>
             </div>
-            <div>
+            <div id="exclude">
                 <p>Exclude:</p>
                 <div>
                     <input type="checkbox" name="filter" value="1" id="genre_action">
