@@ -14,6 +14,11 @@ const filter = document.querySelectorAll('[name="filter"][id^="genre_"]');
 
 const appState = new App();
 
+/**
+ * Gathers the user inputs in the form to generate a query URL.
+ * 
+ * @returns A JSON object with optional `q`, `genres` and `type` properties
+ */
 const parseFormSearchQuery = () => {
     let output = {};
 
@@ -82,7 +87,7 @@ const createCard = ({ images, title, type, year, genres }) => {
 
     const cardAnimeType = document.createElement("p");
     cardAnimeType.innerHTML = `<b>Type:</b> ${type}`;
-    
+
     const genrelistContainer = document.createElement("div");
     genrelistContainer.classList.add("card__genre_list");
 
@@ -92,7 +97,7 @@ const createCard = ({ images, title, type, year, genres }) => {
         genreElement.textContent = genre["name"];
         genrelistContainer.appendChild(genreElement);
     });
-    
+
     cardSubtitle.appendChild(cardYear);
     cardSubtitle.appendChild(cardAnimeType);
     cardTextContent.appendChild(cardTitle);
@@ -100,14 +105,14 @@ const createCard = ({ images, title, type, year, genres }) => {
     cardTextContent.appendChild(genrelistContainer);
     card.appendChild(cardPoster);
     card.appendChild(cardTextContent);
-    container_gallery.appendChild(card);
+    return card;
 };
 
 const renderData = () => {
     container_gallery.innerHTML = "";
     appState
         .renderData
-        .forEach(anime => createCard(anime));
+        .forEach(anime => container_gallery.appendChild(createCard(anime)));
 };
 
 const clearSelectedInQuery = () => {
@@ -166,7 +171,6 @@ document.addEventListener("DOMContentLoaded", async e => {
     appState.setSortDirection(button_sort_direction.textContent);
 
     const result = await jikanService.getAnime();
-    console.log(result);
     appState.replaceData(result);
 
     renderData();
@@ -177,14 +181,14 @@ form_search_query.addEventListener("submit", async e => {
 
     const result = await jikanService.getAnime(parseFormSearchQuery());
     appState.replaceData(result);
-    
+
     renderData();
 });
 
 document.getElementById("title").addEventListener("focusin", e => {
     document.getElementById("search_genres").style.display = "flex";
     document.getElementById("bar").classList.toggle("search__bar_focus");
-    if(document.getElementsByClassName("shadow").length === 0) {
+    if (document.getElementsByClassName("shadow").length === 0) {
         let shadow = document.createElement("span");
         shadow.classList.add("shadow");
         shadow.addEventListener("click", e => {

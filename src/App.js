@@ -48,7 +48,6 @@ export default class App {
      * @returns A number `<=0` if `a` and `b` are in order and `>0` otherwise.
      */
     #sortBySelectedProperty(a, b) {
-        [].sort
         const directionModifier = this.sortDirection === "Ascending" ? 1 : -1;
         switch (this.sortType) {
             case "title":
@@ -67,7 +66,7 @@ export default class App {
      * @returns `true` if no genres are excluded and `false` otherwise.
      */
     #filterOutExcludedGenres(anime) {
-        return !anime.genres 
+        return !anime.genres
             .some(animeGenre => // For all the genres in this anime.
                 // Check if genre is present in the excluded list.
                 this.excludedGenreFilter.includes(animeGenre.mal_id));

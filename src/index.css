@@ -15,6 +15,7 @@
     --color-title: #000;
     --color-subtitle: #292929;
     --color-genre-text: #000;
+    --color-shadow-grey-out: rgba(85, 85, 85, 0.74);
 }
 
 body {
@@ -22,17 +23,6 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-}
-
-.shadow {
-    left: 0;
-    top: 0;
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(85, 85, 85, 0.74);
-    display: block;
-    z-index: 998;
 }
 
 /* GALLERY */
@@ -257,6 +247,17 @@ body {
     font-style: normal;
     font-weight: 400;
     line-height: normal; 
+}
+
+.shadow {
+    left: 0;
+    top: 0;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--color-shadow-grey-out);
+    display: block;
+    z-index: 998;
 }
 /* SEARCH */
 
